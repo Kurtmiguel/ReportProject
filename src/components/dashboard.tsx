@@ -26,10 +26,12 @@ import Image from "next/image";
 import { DashboardForm } from "@/lib/zod-schema";
 import Link from "next/link";
 import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
+import { Label } from "@radix-ui/react-label";
 
 export const DashboardComponent = () => {
   const barangay = ["Barangay 1", "Barangay 2", "Barangay 3"];
-  const type = ["Administrator", "Teaching", "Non-teaching", "Others"];
+  const inHouseType = ["Administrator", "Teaching", "Non-teaching", "Others"];
+  const studentType = ["Alumni member", "Graduate", "Undergraduate"];
   const form = useForm<DashboardForm>({
     resolver: zodResolver(DashboardForm),
     defaultValues: {
@@ -45,9 +47,12 @@ export const DashboardComponent = () => {
       kids: "",
       brgy: "",
       inHouseVolunteerName: "",
-      type: "",
+      inHouseType: "",
       studentVolunteerName: "",
-      otherName: "",
+      organization:"",
+      course:"",
+      studentType:"",
+      partnerName: "",
       narrative: "",
       monitoringUpload: "",
       attendanceUpload: "",
@@ -56,26 +61,59 @@ export const DashboardComponent = () => {
   });
 
   const [activeTab, setActiveTab] = useState('');
-  const [fields, setFields] = useState([{ name: '', type: '' }]);
-  
+  const [inhousefields, inHouseSetFields] = useState([{ name: '', inHouseType: '' }]);
+  const [studentfields, studentSetFields] = useState([{ name: '', course: '', organization:'',studentType:'' }]);
+  const [partnerfields, partnerSetFields] = useState([{ name:''}]);
   const handleTabClick = (tab: React.SetStateAction<string>) => {
     setActiveTab(tab);
   };
 
   const handleAddField = () => {
-    setFields([...fields, { name: '', type: '' }]);
+    inHouseSetFields([...inhousefields, { name: '', inHouseType: '' }]);
+  };
+
+  const handleStudentAddField = () => {
+    studentSetFields([...studentfields, { name: '', course: '', organization:'',studentType:'' }]);
+  };
+
+  const handlePartnerAddField = () => {
+    partnerSetFields([...partnerfields, { name: '' }]);
   };
 
   const handleRemoveField = (index: number) => {
-    const newFields = fields.filter((_, i) => i !== index);
-    setFields(newFields);
+    const inHouseNewFields = inhousefields.filter((_, i) => i !== index);
+    inHouseSetFields(inHouseNewFields);
+  };
+
+  const handleStudentRemoveField = (index: number) => {
+    const studentNewFields = studentfields.filter((_, i) => i !== index);
+    studentSetFields(studentNewFields);
+  };
+
+  const handlePartnerRemoveField = (index: number) => {
+    const partnerNewFields = partnerfields.filter((_, i) => i !== index);
+    partnerSetFields(partnerNewFields);
   };
 
   const handleFieldChange = (index: number, key: string, value: string) => {
-    const newFields = fields.map((field, i) => (
+    const inHouseNewFields = inhousefields.map((field, i) => (
       i === index ? { ...field, [key]: value } : field
     ));
-    setFields(newFields);
+    inHouseSetFields(inHouseNewFields);
+  };
+
+  const handleStudentFieldChange = (index: number, key: string, value: string) => {
+    const studentNewFields = studentfields.map((field, i) => (
+      i === index ? { ...field, [key]: value } : field
+    ));
+    studentSetFields(studentNewFields);
+  };
+
+  const handlePartnerFieldChange = (index: number, key: string, value: string) => {
+    const partnerNewFields = partnerfields.map((field, i) => (
+      i === index ? { ...field, [key]: value } : field
+    ));
+    partnerSetFields(partnerNewFields);
   };
 
   function onSubmit(values: DashboardForm) {
@@ -280,7 +318,7 @@ export const DashboardComponent = () => {
                         )}
                       />
                       <h3 className="text-lg mt-4">In-house Volunteer</h3>
-                      {fields.map((field, index) => (
+                      {inhousefields.map((field, index) => (
                         <div key={index} className="flex items-center space-x-4">
                           <FormField
                             control={form.control}
@@ -301,7 +339,7 @@ export const DashboardComponent = () => {
                           />
                           <FormField
                             control={form.control}
-                            name="type"
+                            name="inHouseType"
                             render={({ field }) => (
                               <FormItem>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -311,8 +349,8 @@ export const DashboardComponent = () => {
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    {type.map((type) => (
-                                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                                    {inHouseType.map((inHouseType) => (
+                                      <SelectItem key={inHouseType} value={inHouseType}>{inHouseType}</SelectItem>
                                     ))}
                                   </SelectContent>
                                 </Select>
@@ -324,6 +362,83 @@ export const DashboardComponent = () => {
                           <Button type="button" onClick={() => handleRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
                         </div>
                       ))}
+                      <h3 className="text-lg mt-4">Student Volunteer</h3>
+                      {studentfields.map((field, index) => (
+                        <div key={index} className="flex items-center space-x-4">
+                          <FormField
+                            control={form.control}
+                            name="studentVolunteerName"
+                            render={({ field: formField }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Input
+                                    className="w-56"
+                                    value={field.name}
+                                    onChange={(e) => handleStudentFieldChange(index, 'name', e.target.value)}
+                                    placeholder="Name" {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button type="button" onClick={handleStudentAddField} className="bg-green-500 text-white">➕</Button>
+                          <Button type="button" onClick={() => handleStudentRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
+                        </div>
+                      ))}
+                      <h3 className="text-lg mt-4">Partner Organization or Office</h3>
+                      {partnerfields.map((field, index) => (
+                        <div key={index} className="flex items-center space-x-4">
+                          <FormField
+                            control={form.control}
+                            name="partnerName"
+                            render={({ field: formField }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Input
+                                    className="w-96"
+                                    value={field.name}
+                                    onChange={(e) => handlePartnerFieldChange(index, 'name', e.target.value)}
+                                    placeholder="Partner Organization or Office Name" {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button type="button" onClick={handlePartnerAddField} className="bg-green-500 text-white">➕</Button>
+                          <Button type="button" onClick={() => handlePartnerRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
+                        </div>
+                      ))}
+                      <FormField
+                        control={form.control}
+                        name="narrative"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Narrative</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Write your Narrative Report here"
+                                className="resize-none"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="monitoringUpload">Monitoring and Evaluation</Label>
+                        <Input id="monitoringUpload" type="file" />
+                      </div>
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="monitoringUpload">Attendance</Label>
+                        <Input id="monitoringUpload" type="file" />
+                      </div>
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="attendanceUpload">Monitoring and Evaluation</Label>
+                        <Input id="attendanceUpload" type="file" />
+                      </div>
                       <Button type="submit">Submit</Button>
                     </form>
                   </Form>
