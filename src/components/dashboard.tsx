@@ -47,11 +47,11 @@ export const DashboardComponent = () => {
       kids: "",
       brgy: "",
       inHouseVolunteerName: "",
-      inHouseType: "",
+      inhousetype: "",
       studentVolunteerName: "",
       organization:"",
       course:"",
-      studentType:"",
+      studenttype:"",
       partnerName: "",
       narrative: "",
       monitoringUpload: "",
@@ -61,19 +61,19 @@ export const DashboardComponent = () => {
   });
 
   const [activeTab, setActiveTab] = useState('');
-  const [inhousefields, inHouseSetFields] = useState([{ name: '', inHouseType: '' }]);
-  const [studentfields, studentSetFields] = useState([{ name: '', course: '', organization:'',studentType:'' }]);
+  const [inhousefields, inHouseSetFields] = useState([{ name: '', inhousetype: '' }]);
+  const [studentfields, studentSetFields] = useState([{ name: '', course: '', organization:'',studenttype:'' }]);
   const [partnerfields, partnerSetFields] = useState([{ name:''}]);
   const handleTabClick = (tab: React.SetStateAction<string>) => {
     setActiveTab(tab);
   };
 
   const handleAddField = () => {
-    inHouseSetFields([...inhousefields, { name: '', inHouseType: '' }]);
+    inHouseSetFields([...inhousefields, { name: '', inhousetype: '' }]);
   };
 
   const handleStudentAddField = () => {
-    studentSetFields([...studentfields, { name: '', course: '', organization:'',studentType:'' }]);
+    studentSetFields([...studentfields, { name: '', course: '', organization:'',studenttype:'' }]);
   };
 
   const handlePartnerAddField = () => {
@@ -131,7 +131,7 @@ export const DashboardComponent = () => {
         />
       </header>
       <div className="flex flex-1">
-        <nav className="bg-white text-white w-1/4 p-4 space-y-4 items-center border-x-2 border-lightgray">
+        <nav className="bg-white text-yellow-400 w-1/4 p-4 space-y-4 items-center border-x-2 border-lightgray">
           <Button
             onClick={() => handleTabClick('submit')}
             className="block px-4 py-2 bg-emerald-950 text-peach rounded text-center w-full"
@@ -339,7 +339,7 @@ export const DashboardComponent = () => {
                           />
                           <FormField
                             control={form.control}
-                            name="inHouseType"
+                            name="inhousetype"
                             render={({ field }) => (
                               <FormItem>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -349,8 +349,8 @@ export const DashboardComponent = () => {
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    {inHouseType.map((inHouseType) => (
-                                      <SelectItem key={inHouseType} value={inHouseType}>{inHouseType}</SelectItem>
+                                    {inHouseType.map((inhousetype) => (
+                                      <SelectItem key={inhousetype} value={inhousetype}>{inhousetype}</SelectItem>
                                     ))}
                                   </SelectContent>
                                 </Select>
@@ -436,7 +436,7 @@ export const DashboardComponent = () => {
                         <Input id="monitoringUpload" type="file" />
                       </div>
                       <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="attendanceUpload">Monitoring and Evaluation</Label>
+                        <Label htmlFor="attendanceUpload">Attachments</Label>
                         <Input id="attendanceUpload" type="file" />
                       </div>
                       <Button type="submit">Submit</Button>
