@@ -48,7 +48,7 @@ export const SignUpComponent = () => {
   }
 
   return (
-    <main className="">
+    <main className="text-emerald-950">
       <div className="flex justify-center items-center flex-1">
         <aside className="h-full w-[360px] border-2 px-8 py-4 shadow-2xl">
           <div className="flex flex-col gap-y-2 justify-center items-center pb-5">
@@ -145,7 +145,7 @@ export const SignUpComponent = () => {
                   </FormItem>
                 )}
               />
-              <Button onClick={() => router.push('/login')} type="submit">Register</Button>
+              <Button className="bg-emerald-950 text-yellow-400"onClick={() => router.push('/login')} type="submit">Register</Button>
             </form>
           </Form>
         </aside>

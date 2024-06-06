@@ -37,7 +37,7 @@ export const LoginComponent = () => {
     }
 
   return(
-    <main className="">
+    <main className="text-emerald-950">
       <div className="flex justify-center items-center flex-1">
         <aside className="h-full w-[360px] border-2 px-8 py-4 shadow-2xl">
           <div className="flex flex-col gap-y-2 justify-center items-center pb-5">
@@ -78,7 +78,7 @@ export const LoginComponent = () => {
               />
               <div className="flex pt-4 justify-between text-center">
                 <button onClick={() => router.push('/register')}>Not yet register?</button>
-                <Button type="submit">Log In</Button>
+                <Button className = "bg-emerald-950 text-yellow-400"type="submit">Log In</Button>
               </div>
             </form>
           </Form>

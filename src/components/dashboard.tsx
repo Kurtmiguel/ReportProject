@@ -121,7 +121,7 @@ export const DashboardComponent = () => {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col">
+    <div className="h-screen w-full flex flex-col text-emerald-950">
       <header className="bg-white flex justify-center items-center border-y-2 border-lightgray">
         <Image
           src="/trinity_logo.png"
@@ -439,7 +439,7 @@ export const DashboardComponent = () => {
                         <Label htmlFor="attendanceUpload">Attachments</Label>
                         <Input id="attendanceUpload" type="file" />
                       </div>
-                      <Button type="submit">Submit</Button>
+                      <Button className="bg-emerald-950 text-yellow-400"type="submit">Submit</Button>
                     </form>
                   </Form>
                 </div>
