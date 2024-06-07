@@ -153,296 +153,330 @@ export const DashboardComponent = () => {
         </nav>
         <main className="flex-1 p-4 bg-white overflow-y-auto">
           {activeTab === 'submit' && (
-            <div>
-              <h2 className="text-xl mb-4">Accomplishment Report</h2>
-              <div className="space-y-4">
-                <div>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                      <FormField
-                        control={form.control}
-                        name="month"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Month</FormLabel>
+            <div className="space-y-8">
+              <div className="bg-gray-200 p-4 rounded">
+                <h2 className="text-xl mb-4">Accomplishment Report</h2>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                      control={form.control}
+                      name="month"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Month</FormLabel>
+                          <FormControl className="w-48">
+                            <Input placeholder="Enter month" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="projectName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Project Name</FormLabel>
+                          <FormControl className="w-96">
+                            <Input placeholder="Enter project name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="coordinatorName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Coordinator Name</FormLabel>
+                          <FormControl className="w-96">
+                            <Input placeholder="Enter coordinator name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    /> 
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h2 className="text-xl mb-4">Table Summary</h2>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                      control={form.control}
+                      name="event"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Event</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter event name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter title" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Date</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="venue"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Venue</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter venue name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="text"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Specific Objective</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Enter specific objectives"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h3 className="text-lg mt-4">Client/Consumers</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                      control={form.control}
+                      name="adult"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Adult</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Number of participants" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="kids"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block">Kids</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Number of participants" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="brgy"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Barangay</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <Input placeholder="shadcn" {...field} />
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select barangay" />
+                              </SelectTrigger>
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="projectName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Project Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="coordinatorName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Coordinator Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <h3 className="text-lg mt-4">Table Summary</h3>
-                      <FormField
-                        control={form.control}
-                        name="event"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Event</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="title"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Title</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="date"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Date</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="venue"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Venue</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="text"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Specific Objective</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Objectives"
-                                className="resize-none"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <h3 className="text-lg mt-4">Client/Consumers</h3>
-                      <FormField
-                        control={form.control}
-                        name="adult"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Adult</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="kids"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="block">Kids</FormLabel>
-                            <FormControl>
-                              <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="brgy"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Barangay</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <SelectContent>
+                              {barangay.map((barangay) => (
+                                <SelectItem key={barangay} value={barangay}>{barangay}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h3 className="text-lg mt-4">In-house Volunteer</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    {inhousefields.map((field, index) => (
+                      <div key={index} className="flex items-center space-x-4">
+                        <FormField
+                          control={form.control}
+                          name="inHouseVolunteerName"
+                          render={({ field: formField }) => (
+                            <FormItem>
                               <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Barangay" />
-                                </SelectTrigger>
+                                <Input
+                                  className="w-56"
+                                  value={field.name}
+                                  onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
+                                  placeholder="Ente volunteer name" {...field}
+                                />
                               </FormControl>
-                              <SelectContent>
-                                {barangay.map((barangay) => (
-                                  <SelectItem key={barangay} value={barangay}>{barangay}</SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <h3 className="text-lg mt-4">In-house Volunteer</h3>
-                      {inhousefields.map((field, index) => (
-                        <div key={index} className="flex items-center space-x-4">
-                          <FormField
-                            control={form.control}
-                            name="inHouseVolunteerName"
-                            render={({ field: formField }) => (
-                              <FormItem>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="inhousetype"
+                          render={({ field }) => (
+                            <FormItem>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <Input
-                                    className="w-96"
-                                    value={field.name}
-                                    onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
-                                    placeholder="Name" {...field}
-                                  />
+                                  <SelectTrigger className="w-96">
+                                    <SelectValue placeholder="Select Type" />
+                                  </SelectTrigger>
                                 </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="inhousetype"
-                            render={({ field }) => (
-                              <FormItem>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                  <FormControl>
-                                    <SelectTrigger className="w-96">
-                                      <SelectValue placeholder="Select Type" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {inHouseType.map((inhousetype) => (
-                                      <SelectItem key={inhousetype} value={inhousetype}>{inhousetype}</SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <Button type="button" onClick={handleAddField} className="bg-green-500 text-white">➕</Button>
-                          <Button type="button" onClick={() => handleRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
-                        </div>
-                      ))}
-                      <h3 className="text-lg mt-4">Student Volunteer</h3>
-                      {studentfields.map((field, index) => (
-                        <div key={index} className="flex items-center space-x-4">
-                          <FormField
-                            control={form.control}
-                            name="studentVolunteerName"
-                            render={({ field: formField }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input
-                                    className="w-56"
-                                    value={field.name}
-                                    onChange={(e) => handleStudentFieldChange(index, 'name', e.target.value)}
-                                    placeholder="Name" {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <Button type="button" onClick={handleStudentAddField} className="bg-green-500 text-white">➕</Button>
-                          <Button type="button" onClick={() => handleStudentRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
-                        </div>
-                      ))}
-                      <h3 className="text-lg mt-4">Partner Organization or Office</h3>
-                      {partnerfields.map((field, index) => (
-                        <div key={index} className="flex items-center space-x-4">
-                          <FormField
-                            control={form.control}
-                            name="partnerName"
-                            render={({ field: formField }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input
-                                    className="w-96"
-                                    value={field.name}
-                                    onChange={(e) => handlePartnerFieldChange(index, 'name', e.target.value)}
-                                    placeholder="Partner Organization or Office Name" {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <Button type="button" onClick={handlePartnerAddField} className="bg-green-500 text-white">➕</Button>
-                          <Button type="button" onClick={() => handlePartnerRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
-                        </div>
-                      ))}
-                      <FormField
-                        control={form.control}
-                        name="narrative"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Narrative</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Write your Narrative Report here"
-                                className="resize-none"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="monitoringUpload">Monitoring and Evaluation</Label>
-                        <Input id="monitoringUpload" type="file" />
+                                <SelectContent>
+                                  {inHouseType.map((inhousetype) => (
+                                    <SelectItem key={inhousetype} value={inhousetype}>{inhousetype}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="button" onClick={handleAddField} className="bg-green-500 text-white">➕</Button>
+                        <Button type="button" onClick={() => handleRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
                       </div>
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="monitoringUpload">Attendance</Label>
-                        <Input id="monitoringUpload" type="file" />
+                    ))}
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h3 className="text-lg mt-4">Student Volunteer</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    {studentfields.map((field, index) => (
+                      <div key={index} className="flex items-center space-x-4">
+                        <FormField
+                          control={form.control}
+                          name="studentVolunteerName"
+                          render={({ field: formField }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  className="w-56"
+                                  value={field.name}
+                                  onChange={(e) => handleStudentFieldChange(index, 'name', e.target.value)}
+                                  placeholder="Ente volunteer name" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="button" onClick={handleStudentAddField} className="bg-green-500 text-white">➕</Button>
+                        <Button type="button" onClick={() => handleStudentRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
                       </div>
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="attendanceUpload">Attachments</Label>
-                        <Input id="attendanceUpload" type="file" />
+                    ))}
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h3 className="text-lg mt-4">Partner Organization or Office</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    {partnerfields.map((field, index) => (
+                      <div key={index} className="flex items-center space-x-4">
+                        <FormField
+                          control={form.control}
+                          name="partnerName"
+                          render={({ field: formField }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  className="w-96"
+                                  value={field.name}
+                                  onChange={(e) => handlePartnerFieldChange(index, 'name', e.target.value)}
+                                  placeholder="Partner Organization or Office" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="button" onClick={handlePartnerAddField} className="bg-green-500 text-white">➕</Button>
+                        <Button type="button" onClick={() => handlePartnerRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
                       </div>
-                      <Button className="bg-emerald-950 text-yellow-400"type="submit">Submit</Button>
-                    </form>
-                  </Form>
-                </div>
+                    ))}
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                      control={form.control}
+                      name="narrative"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Narrative</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Write your narrative report here"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <Label htmlFor="monitoringUpload">Monitoring and Evaluation</Label>
+                      <Input id="monitoringUpload" type="file" />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <Label htmlFor="monitoringUpload">Attendance</Label>
+                      <Input id="monitoringUpload" type="file" />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <Label htmlFor="attendanceUpload">Attachments</Label>
+                      <Input id="attendanceUpload" type="file" />
+                    </div>
+                    <Button className="bg-emerald-950 text-yellow-400"type="submit">Submit</Button>
+                  </form>
+                </Form>
               </div>
             </div>
           )}
