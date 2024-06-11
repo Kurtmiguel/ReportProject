@@ -28,6 +28,12 @@ export const LoginForm = z.object({
 
 export type LoginForm = z.infer<typeof LoginForm>;
 
+const ClientFieldSchema = z.object({
+  numAdults: z.string().nonempty({ message:"Number of participants is required"}),
+  numKids: z.string().nonempty({ message:"Number of participanrs is required"}),
+  brgy: z.string().nonempty({ message:"Barangay is required"}),
+})
+
 const InhouseFieldSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
   inhousetype: z.string().nonempty({ message: "Type is required" }),
@@ -44,6 +50,7 @@ const PartnerFieldSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
 });
 
+
 export const DashboardForm = z.object({
   month: z.string().nonempty({ message: "Month is required" }),
   projectName: z.string().nonempty({ message: "Project Name is required" }),
@@ -53,9 +60,7 @@ export const DashboardForm = z.object({
   date: z.string().nonempty({ message: "Date is required" }),
   venue: z.string().nonempty({ message: "Venue is required" }),
   text: z.string().nonempty({ message: "Text is required" }),
-  adult: z.string().nonempty({ message: "Adult is required" }),
-  kids: z.string().nonempty({ message: "Kids is required" }),
-  brgy: z.string().nonempty({ message: "Barangay is required" }),
+  clientfields: z.array(ClientFieldSchema),
   inhousefields: z.array(InhouseFieldSchema),
   studentfields: z.array(StudentFieldSchema),
   partnerfields: z.array(PartnerFieldSchema),

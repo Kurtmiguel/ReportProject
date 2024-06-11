@@ -21,12 +21,13 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import Image from "next/image";
 import { DashboardForm } from "@/lib/zod-schema";
 import Link from "next/link";
 import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 import { Label } from "@radix-ui/react-label";
+import { ActivitySquare } from "lucide-react";
 
 export const DashboardComponent = () => {
   const barangay = ["Barangay 1", "Barangay 2", "Barangay 3"];
@@ -43,12 +44,10 @@ export const DashboardComponent = () => {
       date: "",
       venue: "",
       text: "",
-      adult: "",
-      kids: "",
-      brgy: "",
+      clientfields:[{ numAdults:'', numKids:'', brgy:''}],
       inhousefields:[{ name:'', inhousetype:''}],
       studentfields:[{ name:'', course:'', organization:'', studenttype:''}],
-      partnerfields:[{name:''}],
+      partnerfields:[{ name:''}],
       narrative: "",
       monitoringUpload: "",
       attendanceUpload: "",
@@ -56,60 +55,29 @@ export const DashboardComponent = () => {
     },
   });
 
+  const {fields: clientfields, append: clientAddField, remove: clientRemoveField } = useFieldArray({
+    control: form.control,
+    name: "clientfields",
+  });
+
+  const {fields: inhousefields, append: inHouseAddField, remove: inHouseRemoveField } = useFieldArray({
+    control: form.control,
+    name: "inhousefields",
+  });
+
+  const {fields: studentfields, append: studentAddField, remove: studentRemoveField } = useFieldArray({
+    control: form.control,
+    name: "studentfields",
+  });
+
+  const {fields: partnerfields, append: partnerAddField, remove: partnerRemoveField } = useFieldArray({
+    control: form.control,
+    name: "partnerfields",
+  });
+
   const [activeTab, setActiveTab] = useState('');
-  const [inhousefields, inHouseSetFields] = useState([{ name: '', inhousetype: '' }]);
-  const [studentfields, studentSetFields] = useState([{ name: '', course: '', organization:'',studenttype:'' }]);
-  const [partnerfields, partnerSetFields] = useState([{ name:''}]);
   const handleTabClick = (tab: React.SetStateAction<string>) => {
     setActiveTab(tab);
-  };
-
-  const handleAddField = () => {
-    inHouseSetFields([...inhousefields, { name: '', inhousetype: '' }]);
-  };
-
-  const handleStudentAddField = () => {
-    studentSetFields([...studentfields, { name: '', course: '', organization:'',studenttype:'' }]);
-  };
-
-  const handlePartnerAddField = () => {
-    partnerSetFields([...partnerfields, { name: '' }]);
-  };
-
-  const handleRemoveField = (index: number) => {
-    const inHouseNewFields = inhousefields.filter((_, i) => i !== index);
-    inHouseSetFields(inHouseNewFields);
-  };
-
-  const handleStudentRemoveField = (index: number) => {
-    const studentNewFields = studentfields.filter((_, i) => i !== index);
-    studentSetFields(studentNewFields);
-  };
-
-  const handlePartnerRemoveField = (index: number) => {
-    const partnerNewFields = partnerfields.filter((_, i) => i !== index);
-    partnerSetFields(partnerNewFields);
-  };
-
-  const handleFieldChange = (index: number, key: string, value: string) => {
-    const inHouseNewFields = inhousefields.map((field, i) => (
-      i === index ? { ...field, [key]: value } : field
-    ));
-    inHouseSetFields(inHouseNewFields);
-  };
-
-  const handleStudentFieldChange = (index: number, key: string, value: string) => {
-    const studentNewFields = studentfields.map((field, i) => (
-      i === index ? { ...field, [key]: value } : field
-    ));
-    studentSetFields(studentNewFields);
-  };
-
-  const handlePartnerFieldChange = (index: number, key: string, value: string) => {
-    const partnerNewFields = partnerfields.map((field, i) => (
-      i === index ? { ...field, [key]: value } : field
-    ));
-    partnerSetFields(partnerNewFields);
   };
 
   function onSubmit(values: DashboardForm) {
@@ -121,7 +89,9 @@ export const DashboardComponent = () => {
       <header className="bg-white flex justify-center items-center border-y-2 border-lightgray">
         <Image
           src="/trinity_logo.png"
-          alt="logo"
+          alt="Trinity logo"
+          priority = {true}
+          className="w-auto h-auto"
           width={150}
           height={150}
         />
@@ -275,75 +245,19 @@ export const DashboardComponent = () => {
               <div className="bg-gray-200 p-4 rounded">
                 <h3 className="text-lg mt-4">Client/Consumers</h3>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <FormField
-                      control={form.control}
-                      name="adult"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="block">Adult</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Number of participants" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="kids"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="block">Kids</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Number of participants" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="brgy"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Barangay</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select barangay" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {barangay.map((barangay) => (
-                                <SelectItem key={barangay} value={barangay}>{barangay}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </form>
-                </Form>
-              </div>
-              <div className="bg-gray-200 p-4 rounded">
-                <h3 className="text-lg mt-4">In-house Volunteer</h3>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    {inhousefields.map((field, index) => (
-                      <div key={index} className="flex items-center space-x-4">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    {clientfields.map((field, index) => (
+                      <div key={field.id} className="flex items-center space-x-4">
                         <FormField
                           control={form.control}
-                          name="inHouseVolunteerName"
-                          render={({ field: formField }) => (
+                          name={`clientfields.${index}.numAdults`}
+                          render={({ field}) => (
                             <FormItem>
+                              <FormLabel className="block">Adults</FormLabel>
                               <FormControl>
                                 <Input
                                   className="w-56"
-                                  value={field.name}
-                                  onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
-                                  placeholder="Ente volunteer name" {...field}
+                                  placeholder="Number of participants" {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -352,18 +266,35 @@ export const DashboardComponent = () => {
                         />
                         <FormField
                           control={form.control}
-                          name="inhousetype"
+                          name={`clientfields.${index}.numKids`}
+                          render={({ field}) => (
+                            <FormItem>
+                              <FormLabel className="block">Kids</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="w-56"
+                                  placeholder="Number of participants" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`clientfields.${index}.brgy`}
                           render={({ field }) => (
                             <FormItem>
+                              <FormLabel className="block">Barangay</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="w-96">
-                                    <SelectValue placeholder="Select Type" />
+                                    <SelectValue placeholder="Select barangay" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {inHouseType.map((inhousetype) => (
-                                    <SelectItem key={inhousetype} value={inhousetype}>{inhousetype}</SelectItem>
+                                  {barangay.map((type) => (
+                                    <SelectItem key={type} value={type}>{type}</SelectItem>
                                   ))}
                                 </SelectContent>
                               </Select>
@@ -371,70 +302,221 @@ export const DashboardComponent = () => {
                             </FormItem>
                           )}
                         />
-                        <Button type="button" onClick={handleAddField} className="bg-green-500 text-white">➕</Button>
-                        <Button type="button" onClick={() => handleRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
+                        <Button 
+                          type="button" 
+                          onClick={() => clientRemoveField(index)} 
+                          className="bg-red-700 text-white px-2 py-1 mt-4 rounded"
+                          >
+                            Remove
+                          </Button>
                       </div>
                     ))}
+                    <Button 
+                      type="button" 
+                      onClick={() => clientAddField({ numAdults:'', numKids:'', brgy:''})} 
+                      className="bg-emerald-950 text-yellow-400 px-4 py-2 rounded"
+                      >
+                        Add Clients/Comsumers
+                      </Button>
+                  </form>
+                </Form>
+              </div>
+              <div className="bg-gray-200 p-4 rounded">
+                <h3 className="text-lg mt-4">In-house Volunteer</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    {inhousefields.map((field, index) => (
+                      <div key={field.id} className="flex items-center space-x-4">
+                        <FormField
+                          control={form.control}
+                          name={`inhousefields.${index}.name`}
+                          render={({ field}) => (
+                            <FormItem>
+                              <FormLabel className="block">Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="w-56"
+                                  placeholder="Enter volunteer name" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`inhousefields.${index}.inhousetype`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="block">Type</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="w-96">
+                                    <SelectValue placeholder="Select Type" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {inHouseType.map((type) => (
+                                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button 
+                          type="button" 
+                          onClick={() => inHouseRemoveField(index)} 
+                          className="bg-red-700 text-white px-2 py-1 mt-4 rounded"
+                          >
+                            Remove
+                          </Button>
+                      </div>
+                    ))}
+                    <Button 
+                      type="button" 
+                      onClick={() => inHouseAddField({ name:'', inhousetype:''})} 
+                      className="bg-emerald-950 text-yellow-400 px-4 py-2 rounded"
+                      >
+                        Add In-house Volunteer
+                      </Button>
                   </form>
                 </Form>
               </div>
               <div className="bg-gray-200 p-4 rounded">
                 <h3 className="text-lg mt-4">Student Volunteer</h3>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     {studentfields.map((field, index) => (
-                      <div key={index} className="flex items-center space-x-4">
+                      <div key={field.id} className="flex items-center space-x-4">
                         <FormField
                           control={form.control}
-                          name="studentVolunteerName"
-                          render={({ field: formField }) => (
+                          name={`studentfields.${index}.name`}
+                          render={({ field }) => (
                             <FormItem>
+                              <FormLabel className="block">Name</FormLabel>
                               <FormControl>
                                 <Input
                                   className="w-56"
-                                  value={field.name}
-                                  onChange={(e) => handleStudentFieldChange(index, 'name', e.target.value)}
-                                  placeholder="Ente volunteer name" {...field}
+                                  placeholder="Enter volunteer name" {...field}
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <Button type="button" onClick={handleStudentAddField} className="bg-green-500 text-white">➕</Button>
-                        <Button type="button" onClick={() => handleStudentRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
+                        <FormField
+                          control={form.control}
+                          name={`studentfields.${index}.course`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="block">Course</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="w-40"
+                                  placeholder="Enter Course" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`studentfields.${index}.organization`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="block">Organization</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="w-64"
+                                  placeholder="Enter Organization" {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`studentfields.${index}.studenttype`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="block">Type</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="w-40">
+                                    <SelectValue placeholder="Select Type" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {studentType.map((type) => (
+                                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button 
+                          type="button" 
+                          onClick={() => studentRemoveField(index)} 
+                          className="bg-red-700 text-white px-2 py-1 mt-4 rounded"
+                          >
+                            Remove
+                          </Button>
                       </div>
                     ))}
+                    <Button 
+                      type="button" 
+                      onClick={() => studentAddField({ name:'', course:'', organization:'', studenttype:''})}
+                      className="bg-emerald-950 text-yellow-400 rounded px-4 py-2"
+                      >
+                        Add Student Volunteer
+                      </Button>
                   </form>
                 </Form>
               </div>
               <div className="bg-gray-200 p-4 rounded">
                 <h3 className="text-lg mt-4">Partner Organization or Office</h3>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     {partnerfields.map((field, index) => (
-                      <div key={index} className="flex items-center space-x-4">
+                      <div key={field.id} className="flex items-center space-x-4">
                         <FormField
                           control={form.control}
-                          name="partnerName"
-                          render={({ field: formField }) => (
+                          name={`partnerfields.${index}.name`}
+                          render={({ field }) => (
                             <FormItem>
+                              <FormLabel className="block">Name</FormLabel>
                               <FormControl>
                                 <Input
                                   className="w-96"
-                                  value={field.name}
-                                  onChange={(e) => handlePartnerFieldChange(index, 'name', e.target.value)}
-                                  placeholder="Partner Organization or Office" {...field}
+                                  placeholder="Enter Name" {...field}
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <Button type="button" onClick={handlePartnerAddField} className="bg-green-500 text-white">➕</Button>
-                        <Button type="button" onClick={() => handlePartnerRemoveField(index)} className="bg-red-500 text-white">🗑️</Button>
+                        <Button 
+                          type="button" 
+                          onClick={() => partnerRemoveField(index)} 
+                          className="bg-red-700 text-white px-2 py-1 mt-4 rounded"
+                          >
+                            Remove
+                          </Button>
                       </div>
                     ))}
+                    <Button 
+                      type="button" 
+                      onClick={() => partnerAddField({ name:''})} 
+                      className="bg-emerald-950 text-yellow-400 px-4 py-2 rounded"
+                      >
+                        Add Partner Volunteer
+                      </Button>
                   </form>
                 </Form>
               </div>
@@ -461,20 +543,31 @@ export const DashboardComponent = () => {
                     <div className="grid w-full max-w-sm items-center gap-1.5">
                       <Label htmlFor="monitoringUpload">Monitoring and Evaluation</Label>
                       <Input id="monitoringUpload" type="file" />
+                      <FormDescription>(PDF/DOC/JPEG/PNG)</FormDescription>
                     </div>
                     <div className="grid w-full max-w-sm items-center gap-1.5">
                       <Label htmlFor="monitoringUpload">Attendance</Label>
                       <Input id="monitoringUpload" type="file" />
+                      <FormDescription>(PDF/DOC/JPEG/PNG)</FormDescription>
                     </div>
                     <div className="grid w-full max-w-sm items-center gap-1.5">
                       <Label htmlFor="attendanceUpload">Attachments</Label>
                       <Input id="attendanceUpload" type="file" />
+                      <FormDescription>(PDF/DOC/JPEG/PNG)</FormDescription>
                     </div>
                     <Button className="bg-emerald-950 text-yellow-400"type="submit">Submit</Button>
                   </form>
                 </Form>
               </div>
             </div>
+          )}
+          {activeTab === 'view' && (
+            <div>
+              <h2>View Content</h2>
+            </div>
+          )}
+          {activeTab === 'list' && (
+            <h2>List of Submitted Reports</h2>
           )}
           <div>
           </div>
