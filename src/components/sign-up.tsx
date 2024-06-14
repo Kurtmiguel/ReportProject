@@ -33,7 +33,8 @@ export const SignUpComponent = () => {
   const form = useForm<RegisterForm>({
     resolver: zodResolver(SignUp),
     defaultValues: {
-      username: "",
+      username:"",
+      name: "",
       email: "",
       password: "",
       college:"",
@@ -54,9 +55,11 @@ export const SignUpComponent = () => {
           <div className="flex flex-col gap-y-2 justify-center items-center pb-5">
             <Image 
               src="/trinity_logo.png"
-              alt="logo"
-              width={120}
-              height={120}
+              alt="Trinity logo"
+              priority = {true}
+              className="w-auto h-auto"
+              width={150}
+              height={150}
             />
           </div>
           <Form {...form}>
@@ -66,10 +69,24 @@ export const SignUpComponent = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>username</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="shadcn" {...field} />
+                        placeholder="Enter your username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -82,7 +99,8 @@ export const SignUpComponent = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="johndoe@email.com..." {...field} />
+                      <Input 
+                        placeholder="johndoe@email.com..." {...field} />
                     </FormControl>                  
                     <FormMessage />
                   </FormItem>
@@ -95,7 +113,9 @@ export const SignUpComponent = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="******" {...field} />
+                      <Input 
+                        type="Enter your password" 
+                        placeholder="******" {...field} />
                     </FormControl>                
                     <FormMessage />
                   </FormItem>
@@ -110,7 +130,8 @@ export const SignUpComponent = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select College" />
+                          <SelectValue 
+                            placeholder="Select college" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -132,7 +153,8 @@ export const SignUpComponent = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Department" />
+                          <SelectValue 
+                            placeholder="Select department" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

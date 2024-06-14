@@ -43,9 +43,11 @@ export const LoginComponent = () => {
           <div className="flex flex-col gap-y-2 justify-center items-center pb-5">
             <Image
               src="/trinity_logo.png"
-              alt="logo"
-              width={120}
-              height={120}
+              alt="Trinity logo"
+              priority = {true}
+              className="w-auto h-auto"
+              width={150}
+              height={150}
             />
           </div>
           <Form {...form}>
@@ -57,7 +59,8 @@ export const LoginComponent = () => {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your username" {...field} />
+                      <Input 
+                        placeholder="Enter your username" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -70,7 +73,9 @@ export const LoginComponent = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter your password" {...field} />
+                      <Input 
+                        type="password" 
+                        placeholder="Enter your password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

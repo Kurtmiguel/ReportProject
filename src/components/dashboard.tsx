@@ -131,7 +131,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Month</FormLabel>
                           <FormControl className="w-48">
-                            <Input placeholder="Enter month" {...field} />
+                            <Input 
+                              placeholder="Enter month" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -144,7 +145,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Project Name</FormLabel>
                           <FormControl className="w-96">
-                            <Input placeholder="Enter project name" {...field} />
+                            <Input 
+                              placeholder="Enter project name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -157,7 +159,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Coordinator Name</FormLabel>
                           <FormControl className="w-96">
-                            <Input placeholder="Enter coordinator name" {...field} />
+                            <Input 
+                              placeholder="Enter coordinator name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -177,7 +180,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Event</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter event name" {...field} />
+                            <Input 
+                              placeholder="Enter event name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -190,7 +194,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter title" {...field} />
+                            <Input 
+                              placeholder="Enter title" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -203,7 +208,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Date</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter date" {...field} />
+                            <Input 
+                              placeholder="Enter date" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -216,7 +222,8 @@ export const DashboardComponent = () => {
                         <FormItem>
                           <FormLabel className="block">Venue</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter venue name" {...field} />
+                            <Input 
+                              placeholder="Enter venue name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -289,7 +296,8 @@ export const DashboardComponent = () => {
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="w-96">
-                                    <SelectValue placeholder="Select barangay" />
+                                    <SelectValue 
+                                      placeholder="Select barangay" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -316,7 +324,7 @@ export const DashboardComponent = () => {
                       onClick={() => clientAddField({ numAdults:'', numKids:'', brgy:''})} 
                       className="bg-emerald-950 text-yellow-400 px-4 py-2 rounded"
                       >
-                        Add Clients/Comsumers
+                        Add Clients/Consumers
                       </Button>
                   </form>
                 </Form>
@@ -352,7 +360,8 @@ export const DashboardComponent = () => {
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="w-96">
-                                    <SelectValue placeholder="Select Type" />
+                                    <SelectValue 
+                                      placeholder="Select Type" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -447,7 +456,8 @@ export const DashboardComponent = () => {
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="w-40">
-                                    <SelectValue placeholder="Select Type" />
+                                    <SelectValue 
+                                      placeholder="Select Type" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -494,7 +504,7 @@ export const DashboardComponent = () => {
                               <FormControl>
                                 <Input
                                   className="w-96"
-                                  placeholder="Enter Name" {...field}
+                                  placeholder="Enter organization or office name" {...field}
                                 />
                               </FormControl>
                               <FormMessage />
