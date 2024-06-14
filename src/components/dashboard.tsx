@@ -515,7 +515,7 @@ export const DashboardComponent = () => {
                       onClick={() => partnerAddField({ name:''})} 
                       className="bg-emerald-950 text-yellow-400 px-4 py-2 rounded"
                       >
-                        Add Partner Volunteer
+                        Add Partner Name 
                       </Button>
                   </form>
                 </Form>
