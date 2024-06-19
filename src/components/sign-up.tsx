@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +23,6 @@ import { RegisterForm, SignUp } from "@/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { Router } from "next/router";
 
 export const SignUpComponent = () => {
   const colleges = ["College 1", "College 2", "College 3"];
@@ -37,14 +35,13 @@ export const SignUpComponent = () => {
       name: "",
       email: "",
       password: "",
+      role: "user",
       college:"",
       department: "",
     },
   });
 
   function onSubmit(values: RegisterForm) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -117,6 +114,30 @@ export const SignUpComponent = () => {
                         type="Enter your password" 
                         placeholder="******" {...field} />
                     </FormControl>                
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="user">User</SelectItem>
+                        <SelectItem value="TCET">TCET</SelectItem>
+                        <SelectItem value="DEAN">DEAN</SelectItem>
+                        <SelectItem value="TCCD">TCCD</SelectItem>
+                        <SelectItem value="VPAA">VPAA</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

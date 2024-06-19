@@ -9,11 +9,14 @@ export const SignUp = z.object({
       message: "Name must be at least 2 characters.",
     }),
     email: z.string().email().min(2, {
-        message: "Email must set properly."
+        message: "Email must set properly.",
     }),
     password: z.string().min(2, {
-        message: "Password  must be at least 2 characters."
+        message: "Password  must be at least 2 characters.",
     }) ,
+    role: z.enum(["user", "TCET", "DEAN", "TCCD", "VPAA"],{
+      message: "Role must be one of the User/Participants, TCET, DEAN, TCCD, or VPAA.",
+    }),
     college: z.string().min(1, {
         message: "Please select College.",
     }),
@@ -27,6 +30,9 @@ export type RegisterForm = z.infer<typeof SignUp>
 export const LoginForm = z.object({
   username: z.string().nonempty('Username is required'),
   password: z.string().nonempty('Password is required'),
+  role: z.enum(["user", "TCET", "DEAN", "TCCD", "VPAA"],{
+    message: "Role must be one of user, TCET, DEAN, TCCD, or VPAA"
+  })
 });
 
 export type LoginForm = z.infer<typeof LoginForm>;

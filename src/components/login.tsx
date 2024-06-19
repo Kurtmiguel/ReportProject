@@ -12,6 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import { Input } from '@/components/ui/input';
 import { LoginForm } from "@/lib/zod-schema";
@@ -30,6 +37,7 @@ export const LoginComponent = () => {
         defaultValues:{
             username:"",
             password:"",
+            role:"user",
         },
     })
     function onSubmit(values: LoginForm) {
@@ -77,6 +85,30 @@ export const LoginComponent = () => {
                         type="password" 
                         placeholder="Enter your password" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="user">User</SelectItem>
+                        <SelectItem value="TCET">TCET</SelectItem>
+                        <SelectItem value="DEAN">DEAN</SelectItem>
+                        <SelectItem value="TCCD">TCCD</SelectItem>
+                        <SelectItem value="VPAA">VPAA</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
