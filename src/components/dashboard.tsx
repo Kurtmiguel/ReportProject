@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,14 @@ import Link from "next/link";
 import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 import { Label } from "@radix-ui/react-label";
 import { ActivitySquare } from "lucide-react";
+import axios from "axios";
+
+interface Report {
+  title: string;
+  date: string;
+  status: string;
+  remarks: string;
+}
 
 export const DashboardComponent = () => {
   const barangay = ["Barangay 1", "Barangay 2", "Barangay 3"];
@@ -81,8 +89,22 @@ export const DashboardComponent = () => {
   };
 
   function onSubmit(values: DashboardForm) {
-    console.log(values);
+    axios.post('/api/sumbitReport', values).then(() => {
+      alert("Report submitted succesfully.");
+    }).catch((error: any) => {
+      console.error("There was an error submitting the report!", error);
+    });
   }
+
+  const [submittedReports, setSubmittedReports] = useState<Report[]>([]);
+  const [approvedReports, setApprovedReports] = useState<Report[]>([]);
+
+  useEffect(() => {
+    axios.get('/api/report').then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
+      setSubmittedReports(response.data.submitted);
+      setApprovedReports(response.data.approved);
+    });
+  },[]);
 
   return (
     <div className="h-screen w-full flex flex-col text-emerald-950">
@@ -573,11 +595,39 @@ export const DashboardComponent = () => {
           )}
           {activeTab === 'view' && (
             <div>
-              <h2>View Content</h2>
+              <h2 className="text-xl mb-4">Submitted Reports</h2>
+              <table className="table-auto w-full bg-white rounded border border-gray-300">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2">Title</th>
+                    <th className="px-4 py-2">Date</th>
+                    <th className="px-4 py-2">Status</th>
+                    <th className="px-4 py-2">Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {submittedReports.map((report, index) => (
+                    <tr key={index} className="bg-gray-100">
+                      <td className="border px-4 py-2">{report.title}</td>
+                      <td className="border px-4 py-2">{report.date}</td>
+                      <td className="border px-4 py-2">{report.status}</td>
+                      <td className="border px-4 py-2">{report.remarks}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
           {activeTab === 'list' && (
-            <h2>List of Submitted Reports</h2>
+          <div>
+            <h2>List of Approved Reports</h2>
+            {approvedReports.map((report, index) => (
+              <div key={index} className="border p-4 mb-4">
+                <h3>{report.title} - {report.date}</h3>
+                <p>Remarks: {report.remarks}</p>
+              </div>
+            ))}
+          </div>
           )}
           <div>
           </div>
