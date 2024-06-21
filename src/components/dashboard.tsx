@@ -24,10 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import Image from "next/image";
 import { DashboardForm } from "@/lib/zod-schema";
-import Link from "next/link";
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 import { Label } from "@radix-ui/react-label";
-import { ActivitySquare } from "lucide-react";
 import axios from "axios";
 
 interface Report {

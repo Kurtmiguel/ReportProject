@@ -2,6 +2,9 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { DashboardForm } from '@/lib/zod-schema';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const submitReport = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
