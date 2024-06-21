@@ -4,6 +4,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface Report {
   id: number;
@@ -23,11 +33,11 @@ export const AdminDashboardComponent = () => {
   };
 
   useEffect(() => {
-    axios.get('/api/report').then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
+    axios.get('/api/submitReport').then((response) => {
       setSubmittedReports(response.data.submitted);
       setApprovedReports(response.data.approved);
     })
-    .catch((error:any) => {
+    .catch((error) => {
         console.error("Error fetching reports:", error)
     });
   }, []);
@@ -87,12 +97,28 @@ export const AdminDashboardComponent = () => {
                   <h3>{report.title} - {report.date}</h3>
                   <p>Status: {report.status}</p>
                   <p>Remarks: {report.remarks}</p>
-                  <Button
-                    className="bg-emerald-950 text-yellow-400"
-                    onClick={() => handleApproval(report.id, prompt('Enter remarks for approval') ?? '')}
-                  >
-                    Approve
-                  </Button>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit((data) => handleApproval(report.id, data.remarks))} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="remarks"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Remarks</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder="Enter remarks for approval" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        type="submit"
+                        className="bg-emerald-950 text-yellow-400"
+                      >
+                        Approve
+                      </Button>
+                    </form>
+                  </Form>
                 </div>
               ))}
             </div>
