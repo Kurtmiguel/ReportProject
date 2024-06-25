@@ -28,10 +28,12 @@ import { Label } from "@radix-ui/react-label";
 import axios from "axios";
 
 interface Report {
+  id: string
   title: string;
   date: string;
   status: string;
   remarks: string;
+  coordinatorName: string;
 }
 
 export const DashboardComponent = () => {
@@ -85,23 +87,43 @@ export const DashboardComponent = () => {
     setActiveTab(tab);
   };
 
-  function onSubmit(values: DashboardForm) {
-    axios.post('/api/sumbitReport', values).then(() => {
-      alert("Report submitted succesfully.");
-    }).catch((error: any) => {
-      console.error("There was an error submitting the report!", error);
-    });
-  }
+  const onSubmit = async (values: DashboardForm) => {
+    try {
+      await axios.post('/api/submitReport', values);
+      alert('Report submitted successfully');
+
+      const emails = ['kurtmiguel17@gmail.com'];
+      await Promise.all(
+        emails.map((email) =>
+        axios.post('/api/sendEmail', { email, report: values}))
+      )
+    } catch (error) {
+      console.error('There was an error submiting the report', error);
+    }
+  };
 
   const [submittedReports, setSubmittedReports] = useState<Report[]>([]);
   const [approvedReports, setApprovedReports] = useState<Report[]>([]);
 
   useEffect(() => {
-    axios.get('/api/report').then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
+    axios.get('/api/reports').then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
       setSubmittedReports(response.data.submitted);
       setApprovedReports(response.data.approved);
     });
   },[]);
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      await axios.post('/api/updateStatus', { id, newStatus});
+      setSubmittedReports((prev) => 
+        prev.map((report) =>
+          report.id === id ? { ...report, status: newStatus } : report
+        )
+      );
+    } catch (error) {
+      console.error('There was an error updating the status!', error);
+    }
+  };
 
   return (
     <div className="h-screen w-full flex flex-col text-emerald-950">
@@ -593,37 +615,41 @@ export const DashboardComponent = () => {
           {activeTab === 'view' && (
             <div>
               <h2 className="text-xl mb-4">Submitted Reports</h2>
-              <table className="table-auto w-full bg-white rounded border border-gray-300">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2">Title</th>
-                    <th className="px-4 py-2">Date</th>
-                    <th className="px-4 py-2">Status</th>
-                    <th className="px-4 py-2">Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {submittedReports.map((report, index) => (
-                    <tr key={index} className="bg-gray-100">
-                      <td className="border px-4 py-2">{report.title}</td>
-                      <td className="border px-4 py-2">{report.date}</td>
-                      <td className="border px-4 py-2">{report.status}</td>
-                      <td className="border px-4 py-2">{report.remarks}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {submittedReports.length === 0 ? (
+                <p>No submitted reports found.</p>
+              ) : (
+                submittedReports.map((report) => (
+                  <div key={report.id} className="bg-gray-100 p-4 mb-4 rounded">
+                    <h3 className="text-lg">{report.title}</h3>
+                    <p>{report.date}</p>
+                    <p>{report.status}</p>
+                    <Button
+                      onClick={() => handleStatusChange(report.id, 'Approved')}
+                      className="bg-emerald-950 text-peach rounded"
+                    >
+                      Approve
+                    </Button>
+                  </div>
+                ))
+              )}
             </div>
           )}
           {activeTab === 'list' && (
           <div>
-            <h2>List of Approved Reports</h2>
-            {approvedReports.map((report, index) => (
-              <div key={index} className="border p-4 mb-4">
-                <h3>{report.title} - {report.date}</h3>
-                <p>Remarks: {report.remarks}</p>
-              </div>
-            ))}
+            <h2 className="text-xl mb-4">Approved Reports</h2>
+            {approvedReports.length === 0 ? (
+              <p>No approved reports found.</p>
+            ) : (
+              approvedReports.map((report) => (
+                <div key={report.id} className="bg-gray-100 p-4 mb-4 rounded">
+                  <h3 className="text-lg">{report.title}</h3>
+                  <p>{report.date}</p>
+                  <p>{report.status}</p>
+                  <p>{report.remarks}</p>
+                  <p>{report.coordinatorName}</p>
+                </div>
+              ))
+            )}
           </div>
           )}
           <div>
