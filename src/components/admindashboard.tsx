@@ -42,25 +42,6 @@ export const AdminDashboardComponent = () => {
     });
   }, []);
 
-  const handleApproval = (reportId: number, remarks: string | null) => {
-    axios.post(`/api/approveReport`, { reportId, remarks })
-      .then(() => {
-        alert("Report approved successfully.");
-
-        axios.get('/api/report')
-          .then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
-            setSubmittedReports(response.data.submitted);
-            setApprovedReports(response.data.approved);
-          })
-          .catch((error: any) => {
-            console.error("Error fetching reports after approval:", error);
-          });
-      })
-      .catch((error: any) => {
-        console.error("There was an error approving the report!", error);
-      });
-  };
-
   return (
     <div className="h-screen w-full flex flex-col text-emerald-950">
       <header className="bg-white flex justify-center items-center border-y-2 border-lightgray">
@@ -92,46 +73,11 @@ export const AdminDashboardComponent = () => {
           {activeTab === 'submitted' && (
             <div>
               <h2>Submitted Reports</h2>
-              {submittedReports.map((report) => (
-                <div key={report.id} className="border p-4 mb-4">
-                  <h3>{report.title} - {report.date}</h3>
-                  <p>Status: {report.status}</p>
-                  <p>Remarks: {report.remarks}</p>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit((data) => handleApproval(report.id, data.remarks))} className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="remarks"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Remarks</FormLabel>
-                            <FormControl>
-                              <Textarea placeholder="Enter remarks for approval" {...field} />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                      <Button
-                        type="submit"
-                        className="bg-emerald-950 text-yellow-400"
-                      >
-                        Approve
-                      </Button>
-                    </form>
-                  </Form>
-                </div>
-              ))}
             </div>
           )}
           {activeTab === 'approved' && (
             <div>
               <h2>Approved Reports</h2>
-              {approvedReports.map((report) => (
-                <div key={report.id} className="border p-4 mb-4">
-                  <h3>{report.title} - {report.date}</h3>
-                  <p>Remarks: {report.remarks}</p>
-                </div>
-              ))}
             </div>
           )}
         </main>

@@ -1,6 +1,5 @@
 'use client'
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,17 +24,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import Image from "next/image";
 import { DashboardForm } from "@/lib/zod-schema";
 import { Label } from "@radix-ui/react-label";
-import axios from "axios";
-
-interface Report {
-  id: string
-  title: string;
-  date: string;
-  status: string;
-  remarks: string;
-  coordinatorName: string;
-}
-
+import { SubmittedReports } from '@/components/submittedReports'
 export const DashboardComponent = () => {
   const barangay = ["Barangay 1", "Barangay 2", "Barangay 3"];
   const inHouseType = ["Administrator", "Teaching", "Non-teaching", "Others"];
@@ -61,70 +50,51 @@ export const DashboardComponent = () => {
       attachmentsUpload: "",
     },
   });
-
   const {fields: clientfields, append: clientAddField, remove: clientRemoveField } = useFieldArray({
     control: form.control,
     name: "clientfields",
   });
-
   const {fields: inhousefields, append: inHouseAddField, remove: inHouseRemoveField } = useFieldArray({
     control: form.control,
     name: "inhousefields",
   });
-
   const {fields: studentfields, append: studentAddField, remove: studentRemoveField } = useFieldArray({
     control: form.control,
     name: "studentfields",
   });
-
   const {fields: partnerfields, append: partnerAddField, remove: partnerRemoveField } = useFieldArray({
     control: form.control,
     name: "partnerfields",
   });
-
   const [activeTab, setActiveTab] = useState('');
   const handleTabClick = (tab: React.SetStateAction<string>) => {
     setActiveTab(tab);
   };
 
-  const onSubmit = async (values: DashboardForm) => {
+  async function onSubmit(values: DashboardForm) {
     try {
-      await axios.post('/api/submitReport', values);
-      alert('Report submitted successfully');
-
-      const emails = ['kurtmiguel17@gmail.com'];
-      await Promise.all(
-        emails.map((email) =>
-        axios.post('/api/sendEmail', { email, report: values}))
-      )
+      const response = await fetch('/api/submitReport', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: values.title,
+          coordinatorName: values.coordinatorName,
+          date: values.date,
+          status: 'Pending',
+        }),
+      });
+      if (response.ok) {
+        console.log('Report submitted successfully');
+      } else {
+        console.error('Failed to submit report');
+      }
     } catch (error) {
-      console.error('There was an error submiting the report', error);
+      console.error('Error submitting report:', error)
     }
-  };
-
-  const [submittedReports, setSubmittedReports] = useState<Report[]>([]);
-  const [approvedReports, setApprovedReports] = useState<Report[]>([]);
-
-  useEffect(() => {
-    axios.get('/api/reports').then((response: { data: { submitted: Report[]; approved: Report[]; }; }) => {
-      setSubmittedReports(response.data.submitted);
-      setApprovedReports(response.data.approved);
-    });
-  },[]);
-
-  const handleStatusChange = async (id: string, newStatus: string) => {
-    try {
-      await axios.post('/api/updateStatus', { id, newStatus});
-      setSubmittedReports((prev) => 
-        prev.map((report) =>
-          report.id === id ? { ...report, status: newStatus } : report
-        )
-      );
-    } catch (error) {
-      console.error('There was an error updating the status!', error);
-    }
-  };
-
+  }
+ 
   return (
     <div className="h-screen w-full flex flex-col text-emerald-950">
       <header className="bg-white flex justify-center items-center border-y-2 border-lightgray">
@@ -140,26 +110,26 @@ export const DashboardComponent = () => {
       <div className="flex flex-1">
         <nav className="bg-white text-yellow-400 w-1/4 p-4 space-y-4 items-center border-x-2 border-lightgray">
           <Button
-            onClick={() => handleTabClick('submit')}
+            onClick={() => handleTabClick('submitReport')}
             className="block px-4 py-2 bg-emerald-950 text-peach rounded text-center w-full"
           >
-            Submit
+            Submit Report
           </Button>
           <Button
-            onClick={() => handleTabClick('view')}
+            onClick={() => handleTabClick('submittedReports')}
             className="block px-4 py-2 bg-emerald-950 text-peach rounded text-center w-full"
           >
-            View
+            Submitted Reports
           </Button>
           <Button
-            onClick={() => handleTabClick('list')}
+            onClick={() => handleTabClick('approvedReports')}
             className="block px-4 py-2 bg-emerald-950 text-peach rounded text-center w-full"
           >
-            List
+            Approved Reports
           </Button>
         </nav>
         <main className="flex-1 p-4 bg-white overflow-y-auto">
-          {activeTab === 'submit' && (
+          {activeTab === 'submitReport' && (
             <div className="space-y-8">
               <div className="bg-gray-200 p-4 rounded">
                 <h2 className="text-xl mb-4">Accomplishment Report</h2>
@@ -612,45 +582,11 @@ export const DashboardComponent = () => {
               </div>
             </div>
           )}
-          {activeTab === 'view' && (
-            <div>
-              <h2 className="text-xl mb-4">Submitted Reports</h2>
-              {submittedReports.length === 0 ? (
-                <p>No submitted reports found.</p>
-              ) : (
-                submittedReports.map((report) => (
-                  <div key={report.id} className="bg-gray-100 p-4 mb-4 rounded">
-                    <h3 className="text-lg">{report.title}</h3>
-                    <p>{report.date}</p>
-                    <p>{report.status}</p>
-                    <Button
-                      onClick={() => handleStatusChange(report.id, 'Approved')}
-                      className="bg-emerald-950 text-peach rounded"
-                    >
-                      Approve
-                    </Button>
-                  </div>
-                ))
-              )}
-            </div>
+          {activeTab === 'submittedReports' && (
+            <SubmittedReports/>
           )}
-          {activeTab === 'list' && (
-          <div>
-            <h2 className="text-xl mb-4">Approved Reports</h2>
-            {approvedReports.length === 0 ? (
-              <p>No approved reports found.</p>
-            ) : (
-              approvedReports.map((report) => (
-                <div key={report.id} className="bg-gray-100 p-4 mb-4 rounded">
-                  <h3 className="text-lg">{report.title}</h3>
-                  <p>{report.date}</p>
-                  <p>{report.status}</p>
-                  <p>{report.remarks}</p>
-                  <p>{report.coordinatorName}</p>
-                </div>
-              ))
-            )}
-          </div>
+          {activeTab === 'approvedReports' && (
+            <h2>List of Submitted Reports</h2>
           )}
           <div>
           </div>
