@@ -24,7 +24,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import Image from "next/image";
 import { DashboardForm } from "@/lib/zod-schema";
 import { Label } from "@radix-ui/react-label";
-import { SubmittedReports } from '@/components/submittedReports'
+import { SubmittedReports } from '@/components/submittedreports'
 export const DashboardComponent = () => {
   const barangay = ["Barangay 1", "Barangay 2", "Barangay 3"];
   const inHouseType = ["Administrator", "Teaching", "Non-teaching", "Others"];
